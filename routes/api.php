@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TodoController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,29 +20,28 @@ Route::namespace('Todo')
     ->middleware(['api', 'auth:api'])
     ->prefix('todos')
     ->group(function () {
-//        Route::get('/', 'REPLACE_WITH_YOUR_CLASS');
-//        Route::get('/{todoId}', 'REPLACE_WITH_YOUR_CLASS');
-//        Route::post('/', 'REPLACE_WITH_YOUR_CLASS');
-//        Route::put('/{todoId}', 'REPLACE_WITH_YOUR_CLASS');
-//        Route::delete('/{todoId}', 'REPLACE_WITH_YOUR_CLASS');
-
-        Route::post('/{todoId}/item', 'Item\CreateOrUpdateItem');
-        Route::put('/{todoId}/item/{itemId}', 'Item\CreateOrUpdateItem');
-//        Route::delete('/{todoId}/item/{itemId}', 'REPLACE_WITH_YOUR_CLASS');
+        Route::get('/', [TodoController::class, 'getTodos']);
+        Route::post('/', [TodoController::class, 'createTodo']);
+        Route::put('/{todoId}', [TodoController::class, 'updateTodo']);
+        Route::get('/{todoId}', [TodoController::class, 'getTodoItems']);
+        Route::delete('/{todoId}', [TodoController::class, 'deleteTodo']);
+        Route::post('/{todoId}/item', [TodoController::class, 'createItem']);
+        Route::put('/{todoId}/item/{itemId}', [TodoController::class, 'updateItem']);
+        Route::delete('/{todoId}/item/{itemId}', [TodoController::class, 'deleteItem']);
     });
 
 Route::namespace('Auth')
     ->middleware([])
     ->prefix('auth')
     ->group(function () {
-        Route::post('login', 'Login');
+        Route::post('login', [AuthController::class, 'login']);
     });
 
 Route::namespace('Auth')
     ->middleware(['api', 'auth:api'])
     ->prefix('auth')
     ->group(function () {
-//        Route::post('refresh', 'REPLACE_WITH_YOUR_CLASS');
-//        Route::get('me', 'REPLACE_WITH_YOUR_CLASS');
-//        Route::get('token', 'REPLACE_WITH_YOUR_CLASS');
+        Route::post('refresh', [AuthController::class, 'refresh']);
+        Route::get('me', [AuthController::class, 'me']);
+        Route::get('token', [AuthController::class, 'getTokenStatus']);
     });

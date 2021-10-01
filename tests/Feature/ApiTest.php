@@ -179,11 +179,13 @@ test('can create and update todo items', function () use ($createUserWithData) {
     auth()->guard()->login($user);
     $this->assertAuthenticated();
 
+    // create todo
     $response = $this->post('/api/todos', [
         'title' => 'My TODO list',
     ]);
     $todo = Todo::query()->where('id', $response->json('data.id'))->firstOrFail();
 
+    // create item
     $response = $this->post('/api/todos/' . $todo->id . '/item', [
         'content' => 'First task',
     ]);
@@ -192,6 +194,16 @@ test('can create and update todo items', function () use ($createUserWithData) {
     $response->assertSuccessful();
     $this->assertEqualsCanonicalizing($item->toArray(), $response->json('data'));
     $this->assertEquals('First task', $response->json('data.content'));
+
+    // update item
+    $response = $this->put('/api/todos/' . $todo->id . '/item/' . $item->id, [
+        'content' => 'First task (update)',
+    ]);
+    $item = TodoItem::query()->where('id', $response->json('data.id'))->firstOrFail();
+
+    $response->assertSuccessful();
+    $this->assertEqualsCanonicalizing($item->toArray(), $response->json('data'));
+    $this->assertEquals('First task (update)', $response->json('data.content'));
 });
 
 test('can delete todo item', function () use ($createUserWithData) {

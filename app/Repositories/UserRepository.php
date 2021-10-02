@@ -17,6 +17,6 @@ class UserRepository
     {
         return $this->user
             ->where('email', $email)
-            ->first();
+            ->firstOrFail();
     }
 }

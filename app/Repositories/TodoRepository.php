@@ -36,7 +36,7 @@ class TodoRepository
 
         $todo = $this->todo
             ->where('id', $todo->id)
-            ->first();
+            ->firstOrFail();
 
         return $todo->toArray();
     }
@@ -46,7 +46,7 @@ class TodoRepository
         $todo = $this->todo
             ->where('id', $todoId)
             ->where('user_id', $userId)
-            ->first();
+            ->firstOrFail();
         
         $todo->title = $title;
         $todo->save();
@@ -60,7 +60,7 @@ class TodoRepository
             ->select(['id', 'user_id', 'title', 'attachment', 'created_at', 'updated_at'])
             ->where('id', $todoId)
             ->with('items')
-            ->first();
+            ->firstOrFail();
 
         return $todo->toArray();
     }
@@ -85,7 +85,7 @@ class TodoRepository
 
         $item = $this->item
             ->where('id', $item->id)
-            ->first();
+            ->firstOrFail();
 
         return $item->toArray();
     }
@@ -94,7 +94,7 @@ class TodoRepository
     {
         $item = $this->item
             ->where('id', $itemId)
-            ->first();
+            ->firstOrFail();
         $item->content = $content;
         $item->save();
 

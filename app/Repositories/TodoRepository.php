@@ -16,7 +16,7 @@ class TodoRepository
         $this->item = $item;
     }
 
-    public function getTodos($userId)
+    public function getTodos($userId): array
     {
         $todos = $this->todo
             ->select(['id', 'user_id', 'title', 'attachment', 'created_at', 'updated_at'])
@@ -27,9 +27,9 @@ class TodoRepository
         return $todos->toArray();
     }
 
-    public function create($userId, $title)
+    public function create($userId, $title) : array
     {
-        $todo = new Todo;
+        $todo = new Todo();
         $todo->user_id = $userId;
         $todo->title = $title;
         $todo->save();
@@ -41,7 +41,7 @@ class TodoRepository
         return $todo->toArray();
     }
 
-    public function update($userId, $todoId, $title)
+    public function update($userId, $todoId, $title): array
     {
         $todo = $this->todo
             ->where('id', $todoId)
@@ -54,7 +54,7 @@ class TodoRepository
         return $todo->toArray();
     }
 
-    public function getTodoItems($todoId)
+    public function getTodoItems($todoId): array
     {
         $todo = $this->todo
             ->select(['id', 'user_id', 'title', 'attachment', 'created_at', 'updated_at'])
@@ -65,7 +65,7 @@ class TodoRepository
         return $todo->toArray();
     }
 
-    public function deleteTodo($todoId)
+    public function deleteTodo($todoId): void
     {
         $this->item
             ->where('todo_id', $todoId)
@@ -76,9 +76,9 @@ class TodoRepository
             ->delete();
     }
 
-    public function createItem($todoId, $content)
+    public function createItem($todoId, $content): array
     {
-        $item = new TodoItem;
+        $item = new TodoItem();
         $item->todo_id = $todoId;
         $item->content = $content;
         $item->save();
@@ -90,7 +90,7 @@ class TodoRepository
         return $item->toArray();
     }
 
-    public function updateItem($itemId, $content)
+    public function updateItem($itemId, $content): array
     {
         $item = $this->item
             ->where('id', $itemId)
@@ -101,7 +101,7 @@ class TodoRepository
         return $item->toArray();
     }
 
-    public function deleteItem($itemId)
+    public function deleteItem($itemId): void
     {
         $this->item
             ->where('id', $itemId)

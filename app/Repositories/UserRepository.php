@@ -13,7 +13,7 @@ class UserRepository
         $this->user = $user;
     }
 
-    public function getUserByEmail($email)
+    public function getUserByEmail($email): User
     {
         return $this->user
             ->where('email', $email)

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use App\Repositories\TodoRepository;
 use App\Repositories\UserRepository;
@@ -24,7 +25,7 @@ class TodoController extends BaseController
         $this->userRepo = $userRepo;
     }
 
-    public function getTodos()
+    public function getTodos(): JsonResponse
     {
         $email = auth()->user()->email;
         $user = $this->userRepo->getUserByEmail($email);
@@ -35,7 +36,7 @@ class TodoController extends BaseController
         ]);
     }
 
-    public function createTodo(Request $request)
+    public function createTodo(Request $request): JsonResponse
     {
         $email = auth()->user()->email;
         $user = $this->userRepo->getUserByEmail($email);
@@ -46,7 +47,7 @@ class TodoController extends BaseController
         ]);
     }
 
-    public function updateTodo(Request $request)
+    public function updateTodo(Request $request): JsonResponse
     {
         $email = auth()->user()->email;
         $user = $this->userRepo->getUserByEmail($email);
@@ -57,7 +58,7 @@ class TodoController extends BaseController
         ]);
     }
 
-    public function getTodoItems(Request $request)
+    public function getTodoItems(Request $request): JsonResponse
     {
         $todoId = $request->todoId;
         $todoItems = $this->todoRepo->getTodoItems($todoId);
@@ -65,7 +66,7 @@ class TodoController extends BaseController
         return response()->json($todoItems);
     }
 
-    public function deleteTodo(Request $request)
+    public function deleteTodo(Request $request): JsonResponse
     {
         $todoId = $request->todoId;
         $todoItems = $this->todoRepo->deleteTodo($todoId);
@@ -75,7 +76,7 @@ class TodoController extends BaseController
         ]);
     }
 
-    public function createItem(Request $request)
+    public function createItem(Request $request): JsonResponse
     {
         $item = $this->todoRepo->createItem($request->todoId, $request->content);
 
@@ -84,7 +85,7 @@ class TodoController extends BaseController
         ]);
     }
 
-    public function updateItem(Request $request)
+    public function updateItem(Request $request): JsonResponse
     {
         $item = $this->todoRepo->updateItem($request->itemId, $request->content);
 
@@ -93,7 +94,7 @@ class TodoController extends BaseController
         ]);
     }
 
-    public function deleteItem(Request $request)
+    public function deleteItem(Request $request): JsonResponse
     {
         $item = $this->todoRepo->deleteItem($request->itemId);
 

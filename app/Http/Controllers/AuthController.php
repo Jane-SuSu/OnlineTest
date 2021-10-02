@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 use App\Models\User;
 use Validator;
 use Carbon\Carbon;
@@ -15,7 +16,7 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -30,12 +31,12 @@ class AuthController extends Controller
         return $this->createNewToken($token);
     }
  
-    public function refresh()
+    public function refresh(): JsonResponse
     {
         return $this->createNewToken(auth()->refresh());
     }
 
-    public function getTokenStatus()
+    public function getTokenStatus(): JsonResponse
     {
         $payload = auth()->getPayload();
         $tokenStatus = collect([
@@ -48,7 +49,7 @@ class AuthController extends Controller
         return response()->json($tokenStatus);
     }
 
-    public function me()
+    public function me(): JsonResponse
     {
         return response()->json([
             'user' => [
@@ -58,7 +59,7 @@ class AuthController extends Controller
         ]);
     }
 
-    protected function createNewToken($token)
+    protected function createNewToken($token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
